@@ -99,7 +99,12 @@ class Box {
     }
 
     isLeftBehind(){
-        return this.vertexes[0].z<this.width;
+        for (var i = 0; i < this.vertexes.length; i++) {
+            if(this.vertexes[0].z<this.width){
+                return true;
+            }
+        }
+        return false;
     }
 
     draw(context, focalLenght, width, heigth) {
