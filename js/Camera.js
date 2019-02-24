@@ -21,7 +21,9 @@ function loop() {
     context.fillRect(0, 0, width, height);
 
     for (var i = 0; i < boxes.length; i++) {
-        boxes[i].draw(context, 400, width, height);
+        if(!boxes[i].isLeftBehind()){
+            boxes[i].draw(context, 400, width, height);
+        }
     }
 }
 

@@ -98,6 +98,10 @@ class Box {
         return points;
     }
 
+    isLeftBehind(){
+        return this.vertexes[0].z<this.width;
+    }
+
     draw(context, focalLenght, width, heigth) {
 
         var vertexes = this.project(focalLenght, width, heigth);
