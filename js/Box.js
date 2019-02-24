@@ -1,9 +1,10 @@
 class Box {
 
-    constructor(x, y, z, l, h, w) {
+    constructor(x, y, z, l, h, w, color) {
         this.length = l;
         this.width = w;
         this.heigth = h;
+        this.color = color;
         this.vertexes = [
             new Point3D(x, y, z),
             new Point3D(x, y + this.heigth, z),
@@ -82,26 +83,26 @@ class Box {
 
     }
 
-    project(lense) {
+    project(focalLenght, width, heigth) {
         var points = new Array(this.vertexes.length);
 
         for (var i = 0; i < points.length; i++) {
 
             let p = this.vertexes[i];
 
-            let x = p.x * (lense / p.z);
-            let y = p.y * (lense / p.z);
+            let x = p.x * (focalLenght / p.z) + width * 0.5;
+            let y = p.y * (focalLenght / p.z) + heigth * 0.5;
 
             points[i] = new Point2D(x, y);
         }
         return points;
     }
 
-    draw(context, color, lense) {
+    draw(context, focalLenght, width, heigth) {
 
-        var vertexes = this.project(lense);
+        var vertexes = this.project(focalLenght, width, heigth);
 
-        context.strokeStyle = color;
+        context.strokeStyle = this.color;
 
         for (var i = 0; i < 2; i++) {
             context.beginPath();
