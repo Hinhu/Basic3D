@@ -62,19 +62,19 @@ document.addEventListener('keydown', event => {
         }
     } else if (event.keyCode === 100) {
         for (var i = 0; i < boxes.length; i++) {
-            boxes[i].rotateY(-0.05);
+            boxes[i].rotateY(0.05);
         }
     } else if (event.keyCode === 102) {
         for (var i = 0; i < boxes.length; i++) {
-            boxes[i].rotateY(0.05);
+            boxes[i].rotateY(-0.05);
         }
     } else if (event.keyCode === 103) {
         for (var i = 0; i < boxes.length; i++) {
-            boxes[i].rotateZ(-0.05);
+            boxes[i].rotateZ(0.05);
         }
     } else if (event.keyCode === 105) {
         for (var i = 0; i < boxes.length; i++) {
-            boxes[i].rotateZ(0.05);
+            boxes[i].rotateZ(-0.05);
         }
     }
 });
