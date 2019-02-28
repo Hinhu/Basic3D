@@ -1,21 +1,13 @@
 var context = document.querySelector("canvas").getContext("2d");
 
-var gridSize=40;
+var focalLength = 400;
 
-var boxes = [];
-
-for (var i=0;i<gridSize;i++){
-    var grid=Array(gridSize);
-    for (var j=0;j<gridSize;j++){
-        grid[j]=new Box(i*5-(5*gridSize/2), 5, j*5-(5*gridSize/4), 5, 0, 5, "#333333");
-    }
-    boxes=boxes.concat(grid);
-}
-
-boxes[gridSize*gridSize]=new Box(-10, 0, 20, 5, 5, 5, "#FFFFFF");
-boxes[gridSize*gridSize+1]=new Box(-10, -5, 30, 5, 10, 5, "#FF0000");
-boxes[gridSize*gridSize+2]=new Box(5, -10, 20, 5, 15, 5, "#00FF00");
-boxes[gridSize*gridSize+3]=new Box(5, -20, 30, 5, 25, 5, "#0000FF");
+var boxes = [
+    new Box(-10, 0, 20, 5, 5, 5, "#FFFFFF"),
+    new Box(-10, -5, 30, 5, 10, 5, "#FF0000"),
+    new Box(5, -10, 20, 5, 15, 5, "#00FF00"),
+    new Box(5, -20, 30, 5, 25, 5, "#0000FF"),
+];
 
 function loop() {
 
@@ -31,8 +23,8 @@ function loop() {
     context.fillRect(0, 0, width, height);
 
     for (var i = 0; i < boxes.length; i++) {
-        if(!boxes[i].isLeftBehind()){
-            boxes[i].draw(context, 400, width, height);
+        if (!boxes[i].isLeftBehind()) {
+            boxes[i].draw(context, focalLength, width, height);
         }
     }
 }
@@ -86,6 +78,10 @@ document.addEventListener('keydown', event => {
         for (var i = 0; i < boxes.length; i++) {
             boxes[i].rotateZ(-0.05);
         }
+    } else if (event.keyCode == 107) {
+        focalLength += 10;
+    } else if (event.keyCode == 109) {
+        focalLength -= 10;
     }
 });
 
