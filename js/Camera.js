@@ -1,13 +1,45 @@
 var context = document.querySelector("canvas").getContext("2d");
 
+
+var height = document.documentElement.clientHeight;
+var width = document.documentElement.clientWidth;
 var focalLength = 400;
 
 var boxes = [
-    new Box(-10, 0, 20, 5, 5, 5, "#FFFFFF"),
-    new Box(-10, -5, 30, 5, 10, 5, "#FF0000"),
-    new Box(5, -10, 20, 5, 15, 5, "#00FF00"),
-    new Box(5, -20, 30, 5, 25, 5, "#0000FF"),
+    new Box(-20, -5, 50, 5, 15, 5, "#848d9b"),
+    new Box(-20, -5, 90, 5, 15, 5, "#7a1818"),
+    new Box(20, -5, 50, 5, 15, 5, "#13ad22"),
+    new Box(20, -5, 90, 5, 15, 5, "#0d62e5"),
 ];
+
+var facesToRender = [];
+
+function calculateFaces() {
+    var boxesToRender = [];
+    for (var i = 0; i < boxes.length; i++) {
+        if (!boxes[i].isLeftBehind()) {
+            boxesToRender.push(boxes[i]);
+        }
+    }
+
+    facesToRender = [];
+    for (var i = 0; i < boxesToRender.length; i++) {
+        var box = boxesToRender[i];
+        for (var j = 0; j < 6; j++) {
+            var facePoints = [];
+            for (var k = 0; k < 4; k++) {
+                facePoints.push(box.vertexes[box.faces[j][k]]);
+            }
+            var face = new Face(facePoints, box.color);
+            if (face.isBack(width / 2, height / 2, focalLength)) {
+                continue;
+            }
+            facesToRender.push(face);
+        }
+    }
+
+    paintersAlgorithm(facesToRender);
+}
 
 function loop() {
 
@@ -22,10 +54,9 @@ function loop() {
     context.fillStyle = "#000000";
     context.fillRect(0, 0, width, height);
 
-    for (var i = 0; i < boxes.length; i++) {
-        if (!boxes[i].isLeftBehind()) {
-            boxes[i].draw(context, focalLength, width, height);
-        }
+
+    for (var i = 0; i < facesToRender.length; i++) {
+        facesToRender[i].draw(context, focalLength, width, height);
     }
 }
 
@@ -83,8 +114,9 @@ document.addEventListener('keydown', event => {
     } else if (event.keyCode == 109) {
         focalLength -= 10;
     }
+    calculateFaces();
 });
 
 
-
+calculateFaces();
 loop();

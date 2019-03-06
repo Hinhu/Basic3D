@@ -6,15 +6,25 @@ class Box {
         this.heigth = h;
         this.color = color;
         this.vertexes = [
-            new Point3D(x, y, z),
-            new Point3D(x, y + this.heigth, z),
-            new Point3D(x + this.length, y + this.heigth, z),
-            new Point3D(x + this.length, y, z),
-            new Point3D(x, y, z - this.width),
-            new Point3D(x, y + this.heigth, z - this.width),
-            new Point3D(x + this.length, y + this.heigth, z - this.width),
-            new Point3D(x + this.length, y, z - this.width)
+            new Point3D(x - l, y - h, z - w),
+            new Point3D(x + l, y - h, z - w),
+            new Point3D(x + l, y + h, z - w),
+            new Point3D(x - l, y + h, z - w),
+            new Point3D(x - l, y - h, z + w),
+            new Point3D(x + l, y - h, z + w),
+            new Point3D(x + l, y + h, z + w),
+            new Point3D(x - l, y + h, z + w)
         ];
+
+        this.faces = [
+            [0, 1, 2, 3],
+            [0, 4, 5, 1],
+            [1, 5, 6, 2],
+            [3, 2, 6, 7],
+            [0, 3, 7, 4],
+            [4, 7, 6, 5]
+        ];
+
     }
 
     translateX(x) {
@@ -98,37 +108,13 @@ class Box {
         return points;
     }
 
-    isLeftBehind(){
+    isLeftBehind() {
         for (var i = 0; i < this.vertexes.length; i++) {
-            if(this.vertexes[0].z<this.width){
+            if (this.vertexes[0].z < this.width) {
                 return true;
             }
         }
         return false;
     }
 
-    draw(context, focalLenght, width, heigth) {
-
-        var vertexes = this.project(focalLenght, width, heigth);
-
-        context.strokeStyle = this.color;
-
-        for (var i = 0; i < 2; i++) {
-            context.beginPath();
-            context.moveTo(vertexes[i * 4].x, vertexes[i * 4].y);
-            context.lineTo(vertexes[i * 4 + 1].x, vertexes[i * 4 + 1].y);
-            context.lineTo(vertexes[i * 4 + 2].x, vertexes[i * 4 + 2].y);
-            context.lineTo(vertexes[i * 4 + 3].x, vertexes[i * 4 + 3].y);
-            context.closePath();
-            context.stroke();
-        }
-
-        for (var i = 0; i < 4; i++) {
-            context.beginPath();
-            context.moveTo(vertexes[i].x, vertexes[i].y);
-            context.lineTo(vertexes[i + 4].x, vertexes[i + 4].y);
-            context.closePath();
-            context.stroke();
-        }
-    }
 }
