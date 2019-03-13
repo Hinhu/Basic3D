@@ -1,49 +1,27 @@
 class Face {
-    constructor(points, color) {
+    constructor(points, fillColor, strokeColor) {
         this.points = points;
-        this.color = color;
+        this.fillColor = fillColor;
+        this.strokeColor = strokeColor;
 
-        this.maxZ = points[0].z;
-        for (var i = 1; i < 4; i++) {
-            if (this.maxZ < points[i].z) {
-                this.maxZ = points[i].z;
-            }
-        }
+        let p0 = points[0];
+        let p1 = new Point3D(
+            (points[1].x - p0.x) / 2 + p0.x,
+            (points[1].y - p0.y) / 2 + p0.y,
+            (points[1].z - p0.z) / 2 + p0.z,
+        );
+        let p3 = new Point3D(
+            (points[3].x - p0.x) / 2 + p0.x,
+            (points[3].y - p0.y) / 2 + p0.y,
+            (points[3].z - p0.z) / 2 + p0.z,
+        );
 
-        this.minZ = points[0].z;
-        for (var i = 1; i < 4; i++) {
-            if (this.minZ > points[i].z) {
-                this.minZ = points[i].z;
-            }
-        }
+        this.center = new Point3D(
+            p3.x + p1.x - p0.x,
+            p3.y + p1.y - p0.y,
+            p3.z + p1.z - p0.z,
+        );
 
-        this.maxY = points[0].y;
-        for (var i = 1; i < 4; i++) {
-            if (this.maxY < points[i].y) {
-                this.maxY = points[i].y;
-            }
-        }
-
-        this.minY = points[0].y;
-        for (var i = 1; i < 4; i++) {
-            if (this.minY > points[i].y) {
-                this.minY = points[i].y;
-            }
-        }
-
-        this.maxX = points[0].x;
-        for (var i = 1; i < 4; i++) {
-            if (this.maxX < points[i].x) {
-                this.maxX = points[i].x;
-            }
-        }
-
-        this.minX = points[0].x;
-        for (var i = 1; i < 4; i++) {
-            if (this.minX > points[i].x) {
-                this.minX = points[i].x;
-            }
-        }
     }
 
     isBack(x, y, z) {
@@ -54,7 +32,7 @@ class Face {
         let v1 = new Point3D(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
         let v2 = new Point3D(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
         let n = new Point3D(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
-        
+
         return -p1.x * n.x + -p1.y * n.y + -p1.z * n.z > 0;
     }
 
@@ -76,8 +54,8 @@ class Face {
     draw(context, focalLenght, width, heigth) {
         var points = this.project(focalLenght, width, heigth);
 
-        context.strokeStyle = "#FFFFFF";
-        context.fillStyle = this.color;
+        context.strokeStyle = this.strokeColor;
+        context.fillStyle = this.fillColor;
 
         context.beginPath();
         context.moveTo(points[0].x, points[0].y);
